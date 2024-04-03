@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"log"
 	"net/http"
 	"strconv"
 	"sync"
@@ -103,10 +104,16 @@ func New(config *Config) (*Logger, error) {
 // This method is safe for concurrent access by multiple goroutines.
 func (lg *Logger) Log(t time.Time, s string) {
 	lg.wg.Add(1)
+	log.Println(t.UnixNano())
+	log.Println(aws.Int64(t.UnixNano()))
+	log.Println(t.UnixNano() / 1e6)
+	log.Println(aws.Int64(t.UnixNano() / int64(time.Millisecond)))
+	log.Println(aws.Int64(t.UnixNano() / int64(time.Nanosecond)))
+
 	go func() {
 		lg.batcher.input <- &cloudwatchlogs.InputLogEvent{
 			Message:   &s,
-			Timestamp: t.UnixNano() / 1e6,
+			Timestamp: aws.Int64(t.UnixNano() / int64(time.Millisecond)),
 		}
 		lg.wg.Done()
 	}()
