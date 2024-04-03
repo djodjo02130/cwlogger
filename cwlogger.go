@@ -106,7 +106,6 @@ func (lg *Logger) Log(t time.Time, s string) {
 	lg.wg.Add(1)
 	log.Println(t.UnixNano())
 	log.Println(aws.Int64(t.UnixNano()))
-	log.Println(t.UnixNano() / 1e6)
 	log.Println(aws.Int64(t.UnixNano() / int64(time.Millisecond)))
 	log.Println(aws.Int64(t.UnixNano() / int64(time.Nanosecond)))
 
