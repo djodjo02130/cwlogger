@@ -105,9 +105,8 @@ func New(config *Config) (*Logger, error) {
 func (lg *Logger) Log(t time.Time, s string) {
 	lg.wg.Add(1)
 	log.Println(t.UnixNano())
-	log.Println(aws.Int64(t.UnixNano()))
-	log.Println(aws.Int64(t.UnixNano() / int64(time.Millisecond)))
-	log.Println(aws.Int64(t.UnixNano() / int64(time.Nanosecond)))
+	log.Println(t.UnixNano() / int64(time.Millisecond))
+	log.Println(t.UnixNano() / int64(time.Nanosecond))
 
 	go func() {
 		lg.batcher.input <- &cloudwatchlogs.InputLogEvent{
